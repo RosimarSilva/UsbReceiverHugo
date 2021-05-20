@@ -1,0 +1,5 @@
+<directory>
+ <chips chipVendor='NXP' >
+  <chip name='MKL33Z64xxx4' xml_file='MKL33Z64xxx4_part.xml' />
+ </chips>
+</directory> 

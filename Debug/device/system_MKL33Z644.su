@@ -1,0 +1,3 @@
+system_MKL33Z644.c:72:6:SystemInit	8	static
+system_MKL33Z644.c:92:6:SystemCoreClockUpdate	16	static
+system_MKL33Z644.c:119:29:SystemInitHook	8	static

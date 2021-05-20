@@ -1,0 +1,4 @@
+fsl_clock.h:463:20:CLOCK_SetLpuart0Clock	16	static
+fsl_clock.h:606:20:CLOCK_SetSimSafeDivs	8	static
+clock_config.c:47:6:BOARD_InitBootClocks	8	static
+clock_config.c:122:6:BOARD_BootClockRUN	8	static
