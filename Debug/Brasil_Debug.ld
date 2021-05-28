@@ -6,7 +6,7 @@
  * Generated linker script file for MKL33Z64xxx4
  * Created from linkscript.ldt by FMCreateLinkLibraries
  * Using Freemarker v2.3.30
- * MCUXpresso IDE v11.3.1 [Build 5262] [2021-04-02] on 19/05/2021 22:52:35
+ * MCUXpresso IDE v11.3.1 [Build 5262] [2021-04-02] on 28/05/2021 02:38:00
  */
 
 INCLUDE "Brasil_Debug_library.ld"

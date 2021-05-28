@@ -32,82 +32,79 @@
  * @file    Brasil.c
  * @brief   Application entry point.
  */
-#include <stdio.h>
-#include "board.h"
-#include "peripherals.h"
-#include "pin_mux.h"
-#include "clock_config.h"
-#include "MKL33Z644.h"
-#include "fsl_lpuart.h"
 /* TODO: insert other include files here. */
+#include "Config.h"
 
-/* TODO: insert other definitions and declarations here. */
 
-/*
- * @brief   Application entry point.
- */
-int chama;
-bool write;
-uint8_t usbRec[10];
-/* LPUART0_IRQn interrupt handler */
-void LPUART0_SERIAL_RX_TX_IRQHANDLER(void) {
-  uint32_t intStatus;
-  char data;
-  /* Reading all interrupt flags of status registers */
-  //intStatus = LPUART_GetStatusFlags(LPUART0_PERIPHERAL);
 
-  if ((kLPUART_RxOverrunFlag ) & LPUART_GetStatusFlags(LPUART0))
-  {
-	  LPUART_ClearStatusFlags(LPUART0_PERIPHERAL, kLPUART_RxOverrunFlag);
-  }
+/*******************************************************************************
+ * Variables
+ ******************************************************************************/
+extern bool SW3;
+extern bool SW2;
 
-  if ((kLPUART_RxDataRegFullFlag ) & LPUART_GetStatusFlags(LPUART0))
-  {
-	  usbRec[chama] = LPUART_ReadByte(LPUART0);
-	  chama ++;
-	  if(chama >= 7)
-	  {
-		 write = 1;
-		 chama = 0;
-	  }
-  }
 
-  /* Flags can be cleared by reading the status register and reading/writing data registers.
-    See the reference manual for details of each flag.
-    The LPUART_ClearStatusFlags() function can be also used for clearing of flags in case the content of data/FIFO regsiter is not used.
-    For example:
-        status_t status;
-        status = LPUART_ClearStatusFlags(LPUART0_PERIPHERAL, intStatus);
-  */
-
-  /* Place your code here */
-
-  /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F
-     Store immediate overlapping exception return operation might vector to incorrect interrupt. */
- #if defined __CORTEX_M && (__CORTEX_M == 4U)
-    __DSB();
-  #endif
-}
-
+/********************************ATENÇÃO ***********************************************
+ * OS PROTÓTIPOS DAS FUNÇÕES ESTÃO TUDO EM CONFIG.H
+ * BOTÕES SW2 E SW3 ESTÃO SENDO LIDOS POR INTERRUPÇÃO
+ * SELETORES DS1, DS2, DS3 E DS2 NÃO ESTÃO SENDO LIDOS POR INTERRUPÇÃO (ROTINAS SE ENCONTRAM CONFIG.C)
+ * AS ROTINAS DE LEITURA E ESCRITA DA EEPROM TAMBÉM ESTÃO LÁ EM CONFIG.C
+ *****************************************************************************************/
+uint8_t dadoSalvo[I2C_DATA_LENGTH], dadoEEpromLido[I2C_DATA_LENGTH];
 int main(void) {
-
+uint8_t b = 0;
     /* Init board hardware. */
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitBootPeripherals();
 
-   // printf("Hello World\n");
+    //Inicia todos os perigéricos
+      iniciaPerifericos();
+      dadoEEpromLido[0]= 1;
+      dadoEEpromLido[1]= 2;
+      dadoEEpromLido[2]= 3;
+      dadoEEpromLido[3]= 4;
+      dadoEEpromLido[4]= 5;
+      dadoEEpromLido[5]= 6;
+      dadoEEpromLido[6]= 7;
+      dadoEEpromLido[7]= 8;
+      dadoEEpromLido[8]= 9;
+      dadoEEpromLido[9]= 10;
 
-    /* Force the counter to be placed into memory. */
-    volatile static int i = 0 ;
-    /* Enter an infinite loop, just incrementing a counter. */
-    while(1) {
+     printf("dado %d\n", I2cReadByte(53));
+      while(1)
+      {
+      	if(SW2)
+      	{
+      		b++;
+      		if(b>10) b=0;
+      		SW2 = 0;
+      		Led1_PutVal(1);
+      		Led2_PutVal(1);
+      		Led3_PutVal(1);
+      		sendBytes(dadoEEpromLido,b);
+      		Delay(1000);
+      		printf("medida %d\n",medidaAnalogica());
+      		Led4_PutVal(1);
+      		Led5_PutVal(1);
+      		Led6_PutVal(1);
+      	}
 
-    	if(write)
-    	{
-    		 LPUART_WriteBlocking(LPUART0, usbRec, sizeof(usbRec) - 1);
-    		 write = 0;
-    	}
-    }
-    return 0 ;
+      	if(SW3)
+      	{
+      		SW3 = 0;
+      		Led1_PutVal(0);
+      		Led2_PutVal(0);
+      		Led3_PutVal(0);
+      		Led4_PutVal(0);
+      		Led5_PutVal(0);
+      		Led6_PutVal(0);
+      	}
+
+      	Delay(500);
+      	__asm volatile ("nop");
+
+      }
+      return 0 ;
 }
+

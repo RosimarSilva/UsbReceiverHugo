@@ -1,4 +1,5 @@
 fsl_clock.h:431:20:CLOCK_EnableClock	24	static
 fsl_port.h:346:20:PORT_SetPinMux	24	static
-pin_mux.c:29:6:BOARD_InitBootPins	8	static
-pin_mux.c:54:6:BOARD_InitPins	8	static
+fsl_port.h:415:20:PORT_SetPinInterruptConfig	24	static
+pin_mux.c:51:6:BOARD_InitBootPins	8	static
+pin_mux.c:95:6:BOARD_InitPins	72	static

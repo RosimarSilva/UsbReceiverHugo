@@ -12,7 +12,11 @@ board/peripherals.o board/peripherals.d: ../board/peripherals.c \
  C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_clock.h \
  C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_common.h \
  C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_lpuart.h \
- C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_clock.h
+ C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_clock.h \
+ C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_tpm.h \
+ C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_adc16.h \
+ C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_gpio.h \
+ ../board/fsl_port.h
 
 ../board/peripherals.h:
 
@@ -41,3 +45,11 @@ C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fs
 C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_lpuart.h:
 
 C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_clock.h:
+
+C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_tpm.h:
+
+C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_adc16.h:
+
+C:\Users\Rosimar\Documents\MCUXpressoIDE_11.3.1_5262\workspace\Brasil\drivers/fsl_gpio.h:
+
+../board/fsl_port.h:

@@ -12,6 +12,10 @@
 #include "fsl_common.h"
 #include "fsl_lpuart.h"
 #include "fsl_clock.h"
+#include "fsl_tpm.h"
+#include "fsl_adc16.h"
+#include "fsl_gpio.h"
+#include "fsl_port.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -29,11 +33,39 @@ extern "C" {
 #define LPUART0_SERIAL_RX_TX_IRQN LPUART0_IRQn
 /* LPUART0 interrupt handler identifier. */
 #define LPUART0_SERIAL_RX_TX_IRQHANDLER LPUART0_IRQHandler
+/* Definition of peripheral ID */
+#define TPM0_PERIPHERAL TPM0
+/* Definition of the clock source frequency */
+#define TPM0_CLOCK_SOURCE 4000000UL
+/* TPM0 interrupt vector ID (number). */
+#define TPM0_IRQN TPM0_IRQn
+/* TPM0 interrupt vector priority. */
+#define TPM0_IRQ_PRIORITY 3
+/* TPM0 interrupt handler identifier. */
+#define timerInterrupt TPM0_IRQHandler
+/* Alias for ADC0 peripheral */
+#define ADC0_PERIPHERAL ADC0
+/* ADC0 interrupt vector ID (number). */
+#define ADC0_IRQN ADC0_IRQn
+/* ADC0 interrupt handler identifier. */
+#define ADC0_IRQHANDLER ADC0_IRQHandler
+/* Alias for GPIOC peripheral */
+#define GPIOC_GPIO GPIOC
+/* Alias for PORTC */
+#define GPIOC_PORT PORTC
+/* GPIOC interrupt vector ID (number). */
+#define GPIOC_IRQN PORTB_PORTC_PORTD_PORTE_IRQn
+/* GPIOC interrupt handler identifier. */
+#define GPIOC_IRQHANDLER PORTB_PORTC_PORTD_PORTE_IRQHandler
 
 /***********************************************************************************************************************
  * Global variables
  **********************************************************************************************************************/
 extern const lpuart_config_t LPUART0_config;
+extern const tpm_config_t TPM0_config;
+extern const adc16_config_t ADC0_config;
+extern const adc16_channel_mux_mode_t ADC0_muxMode;
+extern const adc16_hardware_average_mode_t ADC0_hardwareAverageMode;
 
 /***********************************************************************************************************************
  * Initialization functions

@@ -1,5 +1,12 @@
 core_cm0plus.h:741:22:__NVIC_EnableIRQ	16	static
+core_cm0plus.h:850:22:__NVIC_SetPriority	24	static
 fsl_common.h:484:28:EnableIRQ	16	static
-peripherals.c:115:13:LPUART0_init	8	static
-peripherals.c:125:6:BOARD_InitPeripherals	8	static
-peripherals.c:134:6:BOARD_InitBootPeripherals	8	static
+fsl_tpm.h:574:20:TPM_SetTimerPeriod	16	static
+fsl_tpm.h:608:20:TPM_StartTimer	24	static
+fsl_adc16.h:362:20:ADC16_EnableHardwareTrigger	16	static
+peripherals.c:117:13:LPUART0_init	8	static
+peripherals.c:180:13:TPM0_init	8	static
+peripherals.c:247:13:ADC0_init	8	static
+peripherals.c:285:13:GPIOC_init	8	static
+peripherals.c:294:6:BOARD_InitPeripherals	8	static
+peripherals.c:306:6:BOARD_InitBootPeripherals	8	static

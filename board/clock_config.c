@@ -32,8 +32,11 @@ processor_version: 9.0.0
  * Definitions
  ******************************************************************************/
 #define OSC_CAP0P                                         0U  /*!< Oscillator 0pF capacitor load */
+#define SIM_CLKOUT_SEL_LPO_CLK                            3U  /*!< CLKOUT pin clock select: LPO clock */
+#define SIM_FLEXIO_CLK_SEL_MCGIRCLK_CLK                   3U  /*!< FLEXIO clock select: MCGIRCLK clock */
 #define SIM_LPUART_CLK_SEL_MCGIRCLK_CLK                   3U  /*!< LPUART clock select: MCGIRCLK clock */
 #define SIM_OSC32KSEL_RTC32KCLK_CLK                       2U  /*!< OSC32KSEL select: RTC32KCLK clock (32.768kHz) */
+#define SIM_TPM_CLK_SEL_MCGIRCLK_CLK                      3U  /*!< TPM clock select: MCGIRCLK clock */
 
 /*******************************************************************************
  * Variables
@@ -59,15 +62,21 @@ name: BOARD_BootClockRUN
 called_from_default_init: true
 outputs:
 - {id: Bus_clock.outFreq, value: 24 MHz}
+- {id: CLKOUT.outFreq, value: 1 kHz}
+- {id: COPCLK.outFreq, value: 1 kHz}
 - {id: Core_clock.outFreq, value: 48 MHz}
+- {id: FLEXIOCLK.outFreq, value: 4 MHz}
 - {id: Flash_clock.outFreq, value: 24 MHz}
 - {id: LPO_clock.outFreq, value: 1 kHz}
 - {id: LPUART0CLK.outFreq, value: 4 MHz}
 - {id: MCGIRCLK.outFreq, value: 4 MHz}
 - {id: MCGPCLK.outFreq, value: 48 MHz, locked: true, accuracy: '0.001'}
 - {id: System_clock.outFreq, value: 48 MHz}
+- {id: TPMCLK.outFreq, value: 4 MHz}
 settings:
 - {id: MCGMode, value: HIRC}
+- {id: CLKOUTConfig, value: 'yes'}
+- {id: COPClkConfig, value: 'yes'}
 - {id: FLEXIOClkConfig, value: 'yes'}
 - {id: LPUART0ClkConfig, value: 'yes'}
 - {id: LPUART1ClkConfig, value: 'yes'}
@@ -78,10 +87,14 @@ settings:
 - {id: OSC0_CR_EREFSTEN_CFG, value: Enabled}
 - {id: OSC_CR_ERCLKEN_CFG, value: Enabled}
 - {id: OSC_CR_EREFSTEN_CFG, value: Enabled}
+- {id: SIM.CLKOUTSEL.sel, value: PMC.LPOCLK}
+- {id: SIM.FLEXIOSRCSEL.sel, value: MCG.MCGIRCLK}
 - {id: SIM.LPUART0SRCSEL.sel, value: MCG.MCGIRCLK}
 - {id: SIM.OSC32KSEL.sel, value: SIM.RTC_CLK_EXT_IN}
 - {id: SIM.OUTDIV1.scale, value: '1', locked: true}
 - {id: SIM.OUTDIV4.scale, value: '2', locked: true}
+- {id: SIM.TPMSRCSEL.sel, value: MCG.MCGIRCLK}
+- {id: TPMClkConfig, value: 'yes'}
 sources:
 - {id: MCG.HIRC.outFreq, value: 48 MHz}
 - {id: OSC.OSC.outFreq, value: 32.768 Hz}
@@ -131,5 +144,11 @@ void BOARD_BootClockRUN(void)
     SystemCoreClock = BOARD_BOOTCLOCKRUN_CORE_CLOCK;
     /* Set LPUART0 clock source. */
     CLOCK_SetLpuart0Clock(SIM_LPUART_CLK_SEL_MCGIRCLK_CLK);
+    /* Set FLEXIO clock source. */
+    CLOCK_SetFlexio0Clock(SIM_FLEXIO_CLK_SEL_MCGIRCLK_CLK);
+    /* Set TPM clock source. */
+    CLOCK_SetTpmClock(SIM_TPM_CLK_SEL_MCGIRCLK_CLK);
+    /* Set CLKOUT source. */
+    CLOCK_SetClkOutClock(SIM_CLKOUT_SEL_LPO_CLK);
 }
 

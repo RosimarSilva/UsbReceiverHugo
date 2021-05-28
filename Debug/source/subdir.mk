@@ -5,16 +5,22 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../source/Brasil.c \
+../source/Config.c \
+../source/Interrupcoes.c \
 ../source/mtb.c \
 ../source/semihost_hardfault.c 
 
 OBJS += \
 ./source/Brasil.o \
+./source/Config.o \
+./source/Interrupcoes.o \
 ./source/mtb.o \
 ./source/semihost_hardfault.o 
 
 C_DEPS += \
 ./source/Brasil.d \
+./source/Config.d \
+./source/Interrupcoes.d \
 ./source/mtb.d \
 ./source/semihost_hardfault.d 
 
