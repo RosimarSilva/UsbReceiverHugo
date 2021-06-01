@@ -6,7 +6,7 @@
  */
 #include "Config.h"
 
-int contTempo;
+int contTempo,contBotao;
 
 extern uint8_t dadoSalvo[I2C_DATA_LENGTH], dadoEEpromLido[I2C_DATA_LENGTH];
 
@@ -140,6 +140,30 @@ bool Ds1_GetVal(void){return  (GPIO_PinRead(GPIOC, 1U));}
 bool Ds2_GetVal(void){ return (GPIO_PinRead(GPIOC, 0U));}
 bool Ds3_GetVal(void){ return (GPIO_PinRead(GPIOB, 19U));}
 bool Ds4_GetVal(void){ return (GPIO_PinRead(GPIOB, 18U));}
+bool Sw2_GetVal(void){return (GPIO_PinRead(GPIOC, 3U));}
+bool Sw3_GetVal(void){return (GPIO_PinRead(GPIOC, 2U));}
+extern bool SW3,SW2;
+void analisaBotao(void)
+{
+	if( !Sw2_GetVal())
+	{
+		Delay(200);
+		contBotao = 300;
+		while(!Sw2_GetVal())
+		{
+			SW2 = 1;
+		}
+	}
+	else if(!Sw3_GetVal())
+	{
+		Delay(200);
+		contBotao = 300;
+		while(!Sw3_GetVal())
+		{
+			SW3 = 1;
+		}
+	}
+}
 /******************************************************************************************************/
 //Faz a leitura da medida analógica
 /******************************************************************************************************/
@@ -175,5 +199,134 @@ void sendBytes(uint8_t *data, uint8_t size)
 {
 	 LPUART_WriteBlocking(LPUART0, data, size);
 }
+/******************************************************************************************************/
+//Esta rotina faz o micro voltar ao clock inicial ou seja ao modo RUN 48MHz
+/******************************************************************************************************/
+void levantaClock(void)
+{
+	uint32_t freq;
+    /* Power mode change. */
+    SMC_SetPowerModeRun(SMC);
+    while (kSMC_PowerStateRun != SMC_GetPowerModeState(SMC))
+    {
+    }
+    APP_SetClockRunFromVlpr();
+    freq = CLOCK_GetFreq(kCLOCK_CoreSysClk);
 
+    if(freq == 48000000)
+    {
+        Led3_PutVal(1);
+        Led6_PutVal(0);
+    }
+}
+/***************************************************************************************************************/
+void APP_SetClockRunFromVlpr(void)
+{
+    const mcglite_config_t mcgliteConfig = {.outSrc                  = kMCGLITE_ClkSrcHirc,
+                                            .irclkEnableMode         = 0U,
+                                            .ircs                    = kMCGLITE_Lirc8M,
+                                            .fcrdiv                  = kMCGLITE_LircDivBy1,
+                                            .lircDiv2                = kMCGLITE_LircDivBy1,
+                                            .hircEnableInNotHircMode = true};
+
+    const sim_clock_config_t simConfig = {
+        .clkdiv1 = 0x00010000U, /* SIM_CLKDIV1. */
+#if (defined(FSL_FEATURE_SIM_OPT_HAS_OSC32K_SELECTION) && FSL_FEATURE_SIM_OPT_HAS_OSC32K_SELECTION)
+        .er32kSrc = 0U, /* SIM_SOPT1[OSC32KSEL]. */
+#endif
+    };
+
+    CLOCK_SetSimSafeDivs();
+    CLOCK_SetMcgliteConfig(&mcgliteConfig);
+    CLOCK_SetSimConfig(&simConfig);
+
+}
+
+/******************************************************************************************************/
+//Esta rotina derruba o clock do micro fazendo fazendo o micro entrar em modo de economia
+/******************************************************************************************************/
+void derrubaClock(void)
+{
+	uint32_t freq;
+
+	  freq = CLOCK_GetFreq(kCLOCK_CoreSysClk);
+	  APP_SetClockVlpr();
+   SMC_SetPowerModeVlpr(SMC);
+    while (kSMC_PowerStateVlpr != SMC_GetPowerModeState(SMC))
+    {
+    }
+    freq = CLOCK_GetFreq(kCLOCK_CoreSysClk);
+
+    if(freq <= 31250)
+    {
+  	  Led3_PutVal(0);
+  	  Led6_PutVal(1);
+    }
+}
+/********************************************************************************************************/
+void APP_SetClockVlpr(void)
+{
+    const mcglite_config_t mcgliteConfig = {
+        .outSrc                  = kMCGLITE_ClkSrcLirc,
+        .irclkEnableMode         = kMCGLITE_IrclkEnable,
+        .ircs                    = kMCGLITE_Lirc2M,
+        .fcrdiv                  = kMCGLITE_LircDivBy64,
+        .lircDiv2                = kMCGLITE_LircDivBy128,
+        .hircEnableInNotHircMode = false,
+    };
+
+    const sim_clock_config_t simConfig = {
+        .clkdiv1 = 0x00010000U, /* SIM_CLKDIV1. */
+#if (defined(FSL_FEATURE_SIM_OPT_HAS_OSC32K_SELECTION) && FSL_FEATURE_SIM_OPT_HAS_OSC32K_SELECTION)
+        .er32kSrc = 0U, /* SIM_SOPT1[OSC32KSEL]. */
+#endif
+    };
+
+    CLOCK_SetSimSafeDivs();
+    CLOCK_SetMcgliteConfig(&mcgliteConfig);
+    CLOCK_SetSimConfig(&simConfig);
+}
+/******************************************************************************************************/
+//Esta rotina  configura a data e hora
+/******************************************************************************************************/
+void setRtc(uint16_t year,uint8_t month,uint8_t day,uint8_t hour,uint8_t minute)
+{
+
+    rtc_datetime_t date;
+    rtc_osc_cap_load_t cap;
+
+    /* Set a start date time and start RT */
+	    date.year   = year;
+	    date.month  = month;
+	    date.day    = day;
+	    date.hour   = hour;
+	    date.minute = minute;
+	    date.second = 0;
+
+	    /* RTC time counter has to be stopped before setting the date & time in the TSR register */
+	    RTC_StopTimer(RTC);
+
+	    /* Set RTC time to default */
+	    RTC_SetDatetime(RTC, &date);
+
+	    /* Start the RTC time counter */
+	    RTC_StartTimer(RTC);
+
+
+}
+/******************************************************************************************************/
+//Esta rotina lê data e hora
+/******************************************************************************************************/
+void getRtc(void)
+{
+	 rtc_datetime_t date;
+	   RTC_GetDatetime(RTC, &date);
+
+	   date.year = date.year - 2000;
+
+	   sendBytes(&date, 6);
+
+     //  printf("informnado a hora certa: %04hd-%02hd-%02hd %02hd:%02hd:%02hd\r\n", date.year, date.month, date.day,
+      //        date.hour, date.minute, date.second);
+}
 

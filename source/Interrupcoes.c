@@ -17,7 +17,7 @@
 bool SW3;
 bool SW2;
 
-extern int contTempo;
+extern int contTempo,contBotao;
 
 
 uint8_t pont, usbRec[6];
@@ -99,6 +99,14 @@ void timerInterrupt(void) {
   {
 	  contTempo --;
 	  if(contTempo <= 0) contTempo  = 0;
+  }
+
+
+
+  if(contBotao)
+  {
+	  contBotao --;
+	  if(contBotao <= 0) contBotao  = 0;
   }
 
   /* Place your code here */

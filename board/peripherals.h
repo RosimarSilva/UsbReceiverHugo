@@ -16,6 +16,7 @@
 #include "fsl_adc16.h"
 #include "fsl_gpio.h"
 #include "fsl_port.h"
+#include "fsl_rtc.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -28,7 +29,7 @@ extern "C" {
 /* Definition of peripheral ID */
 #define LPUART0_PERIPHERAL LPUART0
 /* Definition of the clock source frequency */
-#define LPUART0_CLOCK_SOURCE 4000000UL
+#define LPUART0_CLOCK_SOURCE 48000000UL
 /* LPUART0 interrupt vector ID (number). */
 #define LPUART0_SERIAL_RX_TX_IRQN LPUART0_IRQn
 /* LPUART0 interrupt handler identifier. */
@@ -36,7 +37,7 @@ extern "C" {
 /* Definition of peripheral ID */
 #define TPM0_PERIPHERAL TPM0
 /* Definition of the clock source frequency */
-#define TPM0_CLOCK_SOURCE 4000000UL
+#define TPM0_CLOCK_SOURCE 48000000UL
 /* TPM0 interrupt vector ID (number). */
 #define TPM0_IRQN TPM0_IRQn
 /* TPM0 interrupt vector priority. */
@@ -57,6 +58,8 @@ extern "C" {
 #define GPIOC_IRQN PORTB_PORTC_PORTD_PORTE_IRQn
 /* GPIOC interrupt handler identifier. */
 #define GPIOC_IRQHANDLER PORTB_PORTC_PORTD_PORTE_IRQHandler
+/* Definition of peripheral ID */
+#define RTC_PERIPHERAL RTC
 
 /***********************************************************************************************************************
  * Global variables
@@ -66,6 +69,10 @@ extern const tpm_config_t TPM0_config;
 extern const adc16_config_t ADC0_config;
 extern const adc16_channel_mux_mode_t ADC0_muxMode;
 extern const adc16_hardware_average_mode_t ADC0_hardwareAverageMode;
+/* RTC configuration */
+extern const rtc_config_t RTC_config;
+/* Date and time structure */
+extern rtc_datetime_t RTC_dateTimeStruct;
 
 /***********************************************************************************************************************
  * Initialization functions

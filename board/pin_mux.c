@@ -76,8 +76,8 @@ BOARD_InitPins:
   - {pin_num: '39', peripheral: GPIOB, signal: 'GPIO, 16', pin_signal: LCD_P12/PTB16/SPI1_MOSI/LPUART0_RX/TPM_CLKIN0/SPI1_MISO, direction: OUTPUT}
   - {pin_num: '29', peripheral: GPIOA, signal: 'GPIO, 13', pin_signal: PTA13/TPM1_CH1, direction: OUTPUT}
   - {pin_num: '26', peripheral: GPIOA, signal: 'GPIO, 4', pin_signal: PTA4/I2C1_SDA/TPM0_CH1/NMI_b, direction: OUTPUT}
-  - {pin_num: '45', peripheral: GPIOC, signal: 'GPIO, 2', pin_signal: LCD_P22/ADC0_SE11/PTC2/I2C1_SDA/TPM0_CH1, direction: INPUT, gpio_interrupt: kPORT_InterruptRisingEdge}
-  - {pin_num: '46', peripheral: GPIOC, signal: 'GPIO, 3', pin_signal: LCD_P23/PTC3/LLWU_P7/SPI1_SCK/LPUART1_RX/TPM0_CH2/CLKOUT, direction: INPUT, gpio_interrupt: kPORT_InterruptRisingEdge}
+  - {pin_num: '45', peripheral: GPIOC, signal: 'GPIO, 2', pin_signal: LCD_P22/ADC0_SE11/PTC2/I2C1_SDA/TPM0_CH1, direction: INPUT, gpio_interrupt: kPORT_InterruptFallingEdge}
+  - {pin_num: '46', peripheral: GPIOC, signal: 'GPIO, 3', pin_signal: LCD_P23/PTC3/LLWU_P7/SPI1_SCK/LPUART1_RX/TPM0_CH2/CLKOUT, direction: INPUT, gpio_interrupt: kPORT_InterruptFallingEdge}
   - {pin_num: '44', peripheral: GPIOC, signal: 'GPIO, 1', pin_signal: LCD_P21/ADC0_SE15/PTC1/LLWU_P6/RTC_CLKIN/I2C1_SCL/TPM0_CH0, direction: INPUT, gpio_interrupt: no_init}
   - {pin_num: '43', peripheral: GPIOC, signal: 'GPIO, 0', pin_signal: LCD_P20/ADC0_SE14/PTC0/EXTRG_IN/CMP0_OUT, direction: INPUT, gpio_interrupt: no_init}
   - {pin_num: '42', peripheral: GPIOB, signal: 'GPIO, 19', pin_signal: LCD_P15/PTB19/TPM2_CH1, direction: INPUT, gpio_interrupt: no_init}
@@ -240,14 +240,14 @@ void BOARD_InitPins(void)
     /* PORTC2 (pin 45) is configured as PTC2 */
     PORT_SetPinMux(BOARD_INITPINS_Sw3_PORT, BOARD_INITPINS_Sw3_PIN, kPORT_MuxAsGpio);
 
-    /* Interrupt configuration on PORTC2 (pin 45): Interrupt on rising edge */
-    PORT_SetPinInterruptConfig(BOARD_INITPINS_Sw3_PORT, BOARD_INITPINS_Sw3_PIN, kPORT_InterruptRisingEdge);
+    /* Interrupt configuration on PORTC2 (pin 45): Interrupt on falling edge */
+    PORT_SetPinInterruptConfig(BOARD_INITPINS_Sw3_PORT, BOARD_INITPINS_Sw3_PIN, kPORT_InterruptFallingEdge);
 
     /* PORTC3 (pin 46) is configured as PTC3 */
     PORT_SetPinMux(BOARD_INITPINS_Sw2_PORT, BOARD_INITPINS_Sw2_PIN, kPORT_MuxAsGpio);
 
-    /* Interrupt configuration on PORTC3 (pin 46): Interrupt on rising edge */
-    PORT_SetPinInterruptConfig(BOARD_INITPINS_Sw2_PORT, BOARD_INITPINS_Sw2_PIN, kPORT_InterruptRisingEdge);
+    /* Interrupt configuration on PORTC3 (pin 46): Interrupt on falling edge */
+    PORT_SetPinInterruptConfig(BOARD_INITPINS_Sw2_PORT, BOARD_INITPINS_Sw2_PIN, kPORT_InterruptFallingEdge);
 
     /* PORTC7 (pin 56) is configured as PTC7 */
     PORT_SetPinMux(BOARD_INITPINS_Led3_PORT, BOARD_INITPINS_Led3_PIN, kPORT_MuxAsGpio);

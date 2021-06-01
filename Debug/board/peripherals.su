@@ -4,9 +4,12 @@ fsl_common.h:484:28:EnableIRQ	16	static
 fsl_tpm.h:574:20:TPM_SetTimerPeriod	16	static
 fsl_tpm.h:608:20:TPM_StartTimer	24	static
 fsl_adc16.h:362:20:ADC16_EnableHardwareTrigger	16	static
+fsl_rtc.h:361:20:RTC_StartTimer	16	static
+fsl_rtc.h:373:20:RTC_StopTimer	16	static
 peripherals.c:117:13:LPUART0_init	8	static
 peripherals.c:180:13:TPM0_init	8	static
 peripherals.c:247:13:ADC0_init	8	static
 peripherals.c:285:13:GPIOC_init	8	static
-peripherals.c:294:6:BOARD_InitPeripherals	8	static
-peripherals.c:306:6:BOARD_InitBootPeripherals	8	static
+peripherals.c:356:13:RTC_init	8	static
+peripherals.c:370:6:BOARD_InitPeripherals	8	static
+peripherals.c:383:6:BOARD_InitBootPeripherals	8	static

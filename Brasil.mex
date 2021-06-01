@@ -167,13 +167,13 @@
                   <pin peripheral="GPIOC" signal="GPIO, 2" pin_num="45" pin_signal="LCD_P22/ADC0_SE11/PTC2/I2C1_SDA/TPM0_CH1">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
-                        <pin_feature name="gpio_interrupt" value="kPORT_InterruptRisingEdge"/>
+                        <pin_feature name="gpio_interrupt" value="kPORT_InterruptFallingEdge"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIOC" signal="GPIO, 3" pin_num="46" pin_signal="LCD_P23/PTC3/LLWU_P7/SPI1_SCK/LPUART1_RX/TPM0_CH2/CLKOUT">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
-                        <pin_feature name="gpio_interrupt" value="kPORT_InterruptRisingEdge"/>
+                        <pin_feature name="gpio_interrupt" value="kPORT_InterruptFallingEdge"/>
                      </pin_features>
                   </pin>
                   <pin peripheral="GPIOC" signal="GPIO, 1" pin_num="44" pin_signal="LCD_P21/ADC0_SE15/PTC1/LLWU_P6/RTC_CLKIN/I2C1_SCL/TPM0_CH0">
@@ -217,7 +217,42 @@
                <description></description>
                <options/>
                <dependencies>
+                  <dependency resourceType="PinSignal" resourceId="OSC0.EXTAL0" description="&apos;EXTAL0&apos; (Pins tool id: OSC0.EXTAL0, Clocks tool id: OSC.EXTAL0) needs to be routed" problem_level="1" source="Clocks:BOARD_BootClockRUN">
+                     <feature name="routed" evaluation="">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PinSignal" resourceId="OSC0.EXTAL0" description="&apos;EXTAL0&apos; (Pins tool id: OSC0.EXTAL0, Clocks tool id: OSC.EXTAL0) needs to have &apos;INPUT&apos; direction" problem_level="1" source="Clocks:BOARD_BootClockRUN">
+                     <feature name="direction" evaluation="">
+                        <data>INPUT</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PinSignal" resourceId="OSC0.XTAL0" description="&apos;XTAL0&apos; (Pins tool id: OSC0.XTAL0, Clocks tool id: OSC.XTAL0) needs to be routed" problem_level="1" source="Clocks:BOARD_BootClockRUN">
+                     <feature name="routed" evaluation="">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PinSignal" resourceId="OSC0.XTAL0" description="&apos;XTAL0&apos; (Pins tool id: OSC0.XTAL0, Clocks tool id: OSC.XTAL0) needs to have &apos;OUTPUT&apos; direction" problem_level="1" source="Clocks:BOARD_BootClockRUN">
+                     <feature name="direction" evaluation="">
+                        <data>OUTPUT</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PinSignal" resourceId="SIM.rtc_clkin" description="&apos;RTC_CLKIN&apos; (Pins tool id: SIM.rtc_clkin, Clocks tool id: SIM.RTC_CLKIN) needs to be routed" problem_level="1" source="Clocks:BOARD_BootClockRUN">
+                     <feature name="routed" evaluation="">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PinSignal" resourceId="SIM.rtc_clkin" description="&apos;RTC_CLKIN&apos; (Pins tool id: SIM.rtc_clkin, Clocks tool id: SIM.RTC_CLKIN) needs to have &apos;INPUT&apos; direction" problem_level="1" source="Clocks:BOARD_BootClockRUN">
+                     <feature name="direction" evaluation="">
+                        <data>INPUT</data>
+                     </feature>
+                  </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Clocks initialization requires the COMMON Driver in the project." problem_level="2" source="Clocks:BOARD_BootClockRUN">
+                     <feature name="enabled" evaluation="equal" configuration="core0">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="SWComponent" resourceId="platform.drivers.rtc" description="Clocks initialization requires the RTC Driver in the project." problem_level="2" source="Clocks:BOARD_BootClockRUN">
                      <feature name="enabled" evaluation="equal" configuration="core0">
                         <data>true</data>
                      </feature>
@@ -225,21 +260,25 @@
                </dependencies>
                <clock_sources>
                   <clock_source id="MCG.HIRC.outFreq" value="48 MHz" locked="false" enabled="false"/>
-                  <clock_source id="OSC.OSC.outFreq" value="32.768 Hz" locked="false" enabled="false"/>
+                  <clock_source id="OSC.OSC.outFreq" value="32.768 kHz" locked="false" enabled="true"/>
+                  <clock_source id="SIM.RTC_CLK_EXT_IN.outFreq" value="32.768 kHz" locked="false" enabled="true"/>
                </clock_sources>
                <clock_outputs>
                   <clock_output id="Bus_clock.outFreq" value="24 MHz" locked="false" accuracy=""/>
                   <clock_output id="CLKOUT.outFreq" value="1 kHz" locked="false" accuracy=""/>
                   <clock_output id="COPCLK.outFreq" value="1 kHz" locked="false" accuracy=""/>
                   <clock_output id="Core_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
-                  <clock_output id="FLEXIOCLK.outFreq" value="4 MHz" locked="false" accuracy=""/>
+                  <clock_output id="ERCLK32K.outFreq" value="32.768 kHz" locked="false" accuracy=""/>
+                  <clock_output id="FLEXIOCLK.outFreq" value="8 MHz" locked="false" accuracy=""/>
                   <clock_output id="Flash_clock.outFreq" value="24 MHz" locked="false" accuracy=""/>
                   <clock_output id="LPO_clock.outFreq" value="1 kHz" locked="false" accuracy=""/>
-                  <clock_output id="LPUART0CLK.outFreq" value="4 MHz" locked="false" accuracy=""/>
-                  <clock_output id="MCGIRCLK.outFreq" value="4 MHz" locked="false" accuracy=""/>
-                  <clock_output id="MCGPCLK.outFreq" value="48 MHz" locked="true" accuracy="0.001"/>
+                  <clock_output id="LPUART0CLK.outFreq" value="48 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MCGIRCLK.outFreq" value="8 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MCGPCLK.outFreq" value="48 MHz" locked="false" accuracy=""/>
+                  <clock_output id="OSCERCLK.outFreq" value="32.768 kHz" locked="false" accuracy=""/>
+                  <clock_output id="RTC_CLKOUT.outFreq" value="32.768 kHz" locked="false" accuracy=""/>
                   <clock_output id="System_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
-                  <clock_output id="TPMCLK.outFreq" value="4 MHz" locked="false" accuracy=""/>
+                  <clock_output id="TPMCLK.outFreq" value="48 MHz" locked="false" accuracy=""/>
                </clock_outputs>
                <clock_settings>
                   <setting id="MCGMode" value="HIRC" locked="false"/>
@@ -249,19 +288,25 @@
                   <setting id="LPUART0ClkConfig" value="yes" locked="false"/>
                   <setting id="LPUART1ClkConfig" value="yes" locked="false"/>
                   <setting id="MCG.CLKS.sel" value="MCG.HIRC" locked="false"/>
-                  <setting id="MCG.LIRCDIV2.scale" value="2" locked="true"/>
+                  <setting id="MCG.LIRCDIV1.scale" value="1" locked="true"/>
+                  <setting id="MCG.LIRCDIV2.scale" value="1" locked="true"/>
+                  <setting id="MCG_C2_OSC_MODE_CFG" value="RTCLowPower" locked="false"/>
                   <setting id="MCG_MC_HIRCEN_CFG" value="Enabled" locked="false"/>
                   <setting id="OSC0_CR_ERCLKEN_CFG" value="Enabled" locked="false"/>
                   <setting id="OSC0_CR_EREFSTEN_CFG" value="Enabled" locked="false"/>
                   <setting id="OSC_CR_ERCLKEN_CFG" value="Enabled" locked="false"/>
                   <setting id="OSC_CR_EREFSTEN_CFG" value="Enabled" locked="false"/>
+                  <setting id="OSC_CR_SYS_OSC_CAP_LOAD_CFG" value="SC12PF" locked="false"/>
+                  <setting id="RTCCLKOUTConfig" value="yes" locked="false"/>
+                  <setting id="RTCClkConfig" value="yes" locked="false"/>
                   <setting id="SIM.CLKOUTSEL.sel" value="PMC.LPOCLK" locked="false"/>
                   <setting id="SIM.FLEXIOSRCSEL.sel" value="MCG.MCGIRCLK" locked="false"/>
-                  <setting id="SIM.LPUART0SRCSEL.sel" value="MCG.MCGIRCLK" locked="false"/>
+                  <setting id="SIM.LPUART0SRCSEL.sel" value="MCG.MCGPCLK" locked="false"/>
                   <setting id="SIM.OSC32KSEL.sel" value="SIM.RTC_CLK_EXT_IN" locked="false"/>
                   <setting id="SIM.OUTDIV1.scale" value="1" locked="true"/>
                   <setting id="SIM.OUTDIV4.scale" value="2" locked="true"/>
-                  <setting id="SIM.TPMSRCSEL.sel" value="MCG.MCGIRCLK" locked="false"/>
+                  <setting id="SIM.RTCCLKOUTSEL.sel" value="OSC.OSCERCLK" locked="false"/>
+                  <setting id="SIM.TPMSRCSEL.sel" value="MCG.MCGPCLK" locked="false"/>
                   <setting id="TPMClkConfig" value="yes" locked="false"/>
                </clock_settings>
                <called_from_default_init>true</called_from_default_init>
@@ -315,6 +360,16 @@
             <dependency resourceType="SWComponent" resourceId="platform.drivers.gpio" description="Unsupported version of the GPIO Driver in the toolchain/IDE project. Required: ${required_value}, actual: ${actual_value}. Project might not compile correctly." problem_level="1" source="Peripherals">
                <feature name="version" evaluation="greaterOrEqual">
                   <data type="Version">2.4.0</data>
+               </feature>
+            </dependency>
+            <dependency resourceType="SWComponent" resourceId="platform.drivers.rtc" description="RTC Driver not found in the toolchain/IDE project. Project will not compile!" problem_level="2" source="Peripherals">
+               <feature name="enabled" evaluation="equal">
+                  <data type="Boolean">true</data>
+               </feature>
+            </dependency>
+            <dependency resourceType="SWComponent" resourceId="platform.drivers.rtc" description="Unsupported version of the RTC Driver in the toolchain/IDE project. Required: ${required_value}, actual: ${actual_value}. Project might not compile correctly." problem_level="1" source="Peripherals">
+               <feature name="version" evaluation="equivalent">
+                  <data type="Version">2.2.0</data>
                </feature>
             </dependency>
          </dependencies>
@@ -524,6 +579,49 @@
                            <setting name="enable_priority" value="false"/>
                            <setting name="priority" value="0"/>
                            <setting name="enable_custom_name" value="false"/>
+                        </struct>
+                     </config_set>
+                  </instance>
+                  <instance name="RTC" uuid="f89bdd1f-ef8c-4805-a831-5511c400208a" type="rtc" type_id="rtc_603f70732a5387a85b5715615cba9e65" mode="general" peripheral="RTC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="fsl_rtc">
+                        <struct name="clockConfig_t"/>
+                        <struct name="rtc_config">
+                           <setting name="updateMode" value="true"/>
+                           <setting name="supervisorAccess" value="true"/>
+                           <setting name="compensationIntervalInt" value="1"/>
+                           <setting name="compensationTimeInt" value="10"/>
+                           <setting name="setDateTime" value="true"/>
+                           <struct name="rtc_datetime">
+                              <setting name="year" value="2021"/>
+                              <setting name="month" value="05"/>
+                              <setting name="day" value="31"/>
+                              <setting name="hour" value="14"/>
+                              <setting name="minute" value="32"/>
+                              <setting name="second" value="0"/>
+                           </struct>
+                           <setting name="setAlarm" value="false"/>
+                           <setting name="start" value="true"/>
+                        </struct>
+                        <struct name="interruptsCfg">
+                           <set name="interruptSources">
+                              <selected/>
+                           </set>
+                           <setting name="isSecondsInterruptEnabled" value="false"/>
+                           <struct name="secondsInterrupt">
+                              <setting name="IRQn" value="RTC_Seconds_IRQn"/>
+                              <setting name="enable_interrrupt" value="enabled"/>
+                              <setting name="enable_priority" value="false"/>
+                              <setting name="priority" value="1"/>
+                              <setting name="enable_custom_name" value="false"/>
+                           </struct>
+                           <setting name="isInterruptEnabled" value="false"/>
+                           <struct name="commonInterrupt">
+                              <setting name="IRQn" value="RTC_IRQn"/>
+                              <setting name="enable_interrrupt" value="enabled"/>
+                              <setting name="enable_priority" value="false"/>
+                              <setting name="priority" value="0"/>
+                              <setting name="enable_custom_name" value="false"/>
+                           </struct>
                         </struct>
                      </config_set>
                   </instance>

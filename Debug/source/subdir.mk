@@ -7,6 +7,7 @@ C_SRCS += \
 ../source/Brasil.c \
 ../source/Config.c \
 ../source/Interrupcoes.c \
+../source/clock_mcglite.c \
 ../source/mtb.c \
 ../source/semihost_hardfault.c 
 
@@ -14,6 +15,7 @@ OBJS += \
 ./source/Brasil.o \
 ./source/Config.o \
 ./source/Interrupcoes.o \
+./source/clock_mcglite.o \
 ./source/mtb.o \
 ./source/semihost_hardfault.o 
 
@@ -21,6 +23,7 @@ C_DEPS += \
 ./source/Brasil.d \
 ./source/Config.d \
 ./source/Interrupcoes.d \
+./source/clock_mcglite.d \
 ./source/mtb.d \
 ./source/semihost_hardfault.d 
 

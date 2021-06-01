@@ -289,6 +289,82 @@ static void GPIOC_init(void) {
 }
 
 /***********************************************************************************************************************
+ * RTC initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'RTC'
+- type: 'rtc'
+- mode: 'general'
+- custom_name_enabled: 'false'
+- type_id: 'rtc_603f70732a5387a85b5715615cba9e65'
+- functional_group: 'BOARD_InitPeripherals'
+- peripheral: 'RTC'
+- config_sets:
+  - fsl_rtc:
+    - clockConfig_t: []
+    - rtc_config:
+      - updateMode: 'true'
+      - supervisorAccess: 'true'
+      - compensationIntervalInt: '1'
+      - compensationTimeInt: '10'
+      - setDateTime: 'true'
+      - rtc_datetime:
+        - year: '2021'
+        - month: '05'
+        - day: '31'
+        - hour: '14'
+        - minute: '32'
+        - second: '0'
+      - setAlarm: 'false'
+      - start: 'true'
+    - interruptsCfg:
+      - interruptSources: ''
+      - isSecondsInterruptEnabled: 'false'
+      - secondsInterrupt:
+        - IRQn: 'RTC_Seconds_IRQn'
+        - enable_interrrupt: 'enabled'
+        - enable_priority: 'false'
+        - priority: '1'
+        - enable_custom_name: 'false'
+      - isInterruptEnabled: 'false'
+      - commonInterrupt:
+        - IRQn: 'RTC_IRQn'
+        - enable_interrrupt: 'enabled'
+        - enable_priority: 'false'
+        - priority: '0'
+        - enable_custom_name: 'false'
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+const rtc_config_t RTC_config = {
+  .wakeupSelect = false,
+  .updateMode = true,
+  .supervisorAccess = true,
+  .compensationInterval = 0x0U,
+  .compensationTime = 0xF6U
+};
+rtc_datetime_t RTC_dateTimeStruct = {
+  .year = 2021U,
+  .month = 05U,
+  .day = 31U,
+  .hour = 14U,
+  .minute = 32U,
+  .second = 0U
+};
+
+static void RTC_init(void) {
+  /* RTC initialization */
+  RTC_Init(RTC_PERIPHERAL, &RTC_config);
+  /* Stop RTC timer */
+  RTC_StopTimer(RTC_PERIPHERAL);
+  /* Date and time initialization */
+  RTC_SetDatetime(RTC_PERIPHERAL, &RTC_dateTimeStruct);
+  /* Start RTC timer */
+  RTC_StartTimer(RTC_PERIPHERAL);
+}
+
+/***********************************************************************************************************************
  * Initialization functions
  **********************************************************************************************************************/
 void BOARD_InitPeripherals(void)
@@ -298,6 +374,7 @@ void BOARD_InitPeripherals(void)
   TPM0_init();
   ADC0_init();
   GPIOC_init();
+  RTC_init();
 }
 
 /***********************************************************************************************************************

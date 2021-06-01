@@ -20,6 +20,13 @@
 #include "fsl_lpuart.h"
 #include "fsl_uart.h"
 #include "fsl_adc16.h"
+#include "fsl_rtc.h"
+
+#include "fsl_lptmr.h"
+#include "fsl_smc.h"
+#include "fsl_llwu.h"
+#include "fsl_rcm.h"
+#include "clock_mcglite.c"
 
 /*Esta macro coloca em nivel lógico high ou low o pino
  * que aciona o rele  PTB17 */
@@ -103,6 +110,8 @@ bool Ds1_GetVal(void);
 bool Ds2_GetVal(void);
 bool Ds3_GetVal(void);
 bool Ds4_GetVal(void);
+bool Sw2_GetVal(void);
+bool Sw3_GetVal(void);
 
 //Lê a medida analógica
 uint32_t medidaAnalogica(void);
@@ -110,7 +119,16 @@ uint32_t medidaAnalogica(void);
 void Delay(int t);
 void sendBytes(uint8_t *data, uint8_t size);
 
+void APP_SetClockVlpr(void);// faz o micro entrar em ecomonia de energia
+void APP_SetClockRunFromVlpr(void);//faz o micro sair do modo energia
 
+void setRtc(uint16_t year,uint8_t month,uint8_t day,uint8_t hour,uint8_t minute);//configuradia e hora
+void getRtc(void); //Lê dia e hora
+
+void derrubaClock(void);
+void levantaClock(void);
+
+void analisaBotao(void);
 typedef struct _i2cDados_t
 {
 	uint8_t dadoLido;
@@ -118,7 +136,28 @@ typedef struct _i2cDados_t
 	uint8_t dadoEEpromLido[I2C_DATA_LENGTH];
 }i2cDados_t;
 
+/* Power mode definition used in application. */
+typedef enum _app_power_mode
+{
+    kAPP_PowerModeMin = 'A' - 1,
+    kAPP_PowerModeRun,   /* Normal RUN mode */
+    kAPP_PowerModeWait,  /* WAIT mode. */
+    kAPP_PowerModeStop,  /* STOP mode. */
+    kAPP_PowerModeVlpr,  /* VLPR mode. */
+    kAPP_PowerModeVlpw,  /* VLPW mode. */
+    kAPP_PowerModeVlps,  /* VLPS mode. */
+    kAPP_PowerModeLls,   /* LLS mode. */
+    kAPP_PowerModeVlls0, /* VLLS0 mode. */
+    kAPP_PowerModeVlls1, /* VLLS1 mode. */
+    kAPP_PowerModeVlls3, /* VLLS3 mode. */
+    kAPP_PowerModeMax
+} app_power_mode_t;
 
+typedef enum _app_wakeup_source
+{
+    kAPP_WakeupSourceLptmr, /*!< Wakeup by LPTMR.        */
+    kAPP_WakeupSourcePin    /*!< Wakeup by external pin. */
+} app_wakeup_source_t;
 
 
 

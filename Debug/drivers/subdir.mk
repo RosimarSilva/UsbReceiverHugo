@@ -9,8 +9,13 @@ C_SRCS += \
 ../drivers/fsl_common.c \
 ../drivers/fsl_gpio.c \
 ../drivers/fsl_i2c.c \
+../drivers/fsl_llwu.c \
+../drivers/fsl_lptmr.c \
 ../drivers/fsl_lpuart.c \
+../drivers/fsl_pmc.c \
+../drivers/fsl_rcm.c \
 ../drivers/fsl_rtc.c \
+../drivers/fsl_smc.c \
 ../drivers/fsl_tpm.c \
 ../drivers/fsl_uart.c 
 
@@ -20,8 +25,13 @@ OBJS += \
 ./drivers/fsl_common.o \
 ./drivers/fsl_gpio.o \
 ./drivers/fsl_i2c.o \
+./drivers/fsl_llwu.o \
+./drivers/fsl_lptmr.o \
 ./drivers/fsl_lpuart.o \
+./drivers/fsl_pmc.o \
+./drivers/fsl_rcm.o \
 ./drivers/fsl_rtc.o \
+./drivers/fsl_smc.o \
 ./drivers/fsl_tpm.o \
 ./drivers/fsl_uart.o 
 
@@ -31,8 +41,13 @@ C_DEPS += \
 ./drivers/fsl_common.d \
 ./drivers/fsl_gpio.d \
 ./drivers/fsl_i2c.d \
+./drivers/fsl_llwu.d \
+./drivers/fsl_lptmr.d \
 ./drivers/fsl_lpuart.d \
+./drivers/fsl_pmc.d \
+./drivers/fsl_rcm.d \
 ./drivers/fsl_rtc.d \
+./drivers/fsl_smc.d \
 ./drivers/fsl_tpm.d \
 ./drivers/fsl_uart.d 
 
